@@ -7,6 +7,13 @@ type gender =
 | Male
 | Female
 
+type day =
+{
+  breakfast : int;
+  lunch : int;
+  dinner : int;
+}
+
 type user =
 {
   name : string;
@@ -16,7 +23,8 @@ type user =
   height : int;
   goal : goal;
   pal : float;
-  calorie_intake : float
+  calorie_intake : float;
+  days : day list
 }
 
 
@@ -96,12 +104,75 @@ let create_new_user () =
     height = height;
     goal = goal;
     pal = pal;
-    calorie_intake = calorie_intake
+    calorie_intake = calorie_intake;
+    days = []
   } in
   new_user
+
+let add_day user =
+  let new_day = {
+    breakfast = 0;
+    lunch = 0;
+    dinner = 0
+  } in
+  { user with days = new_day :: user.days }
+
+let modify_day user =
+  print_endline "1. Add breakfast";
+  print_endline "2. Add lunch";
+  print_endline "3. Add dinner";
+  print_endline "4. Exit";
+  let command = read_line () in
+  match command with
+  | "1" | "2" | "3" ->
+      let () = print_endline "Enter calories: " in
+      let calories = read_int () in
+      match user.days with
+      | [] -> failwith "no existing days!"
+      | last_day :: xs ->
+          let modified_day =
+            match command with
+            | "1" -> { last_day with breakfast = calories }
+            | "2" -> { last_day with lunch = calories }
+            | _ -> { last_day with dinner = calories }
+          in { user with days = modified_day :: xs }
+  | _ -> user
+          
+let rec main_menu user =
+  print_endline "1. Add a new day";
+  print_endline "2. Modify an existing day";
+  print_endline "3. Exit";
+  match read_line () with
+  | "1" -> 
+      let user = add_day user in
+      print_endline "New day added!";
+      main_menu user
+  | "2" ->
+      let user = modify_day user in
+      print_endline "Existing day modified!";
+      main_menu user
+  | "3" -> ()
+  | _ -> 
+      print_endline "Invalid option! Try again";
+      main_menu user
+
+let example_user = {
+  name = "Anna";
+  age = 20;
+  gender = Female;
+  weight = 60.;
+  height = 160;
+  goal = Maintain;
+  pal = 1.3;
+  calorie_intake = 2000.;
+  days = [];
+}
 
 
 let () =
   print_endline "Welcome!";
+  (*
   let user = create_new_user () in
-  ()
+  main_menu user
+  *)
+  let user = example_user in main_menu user
