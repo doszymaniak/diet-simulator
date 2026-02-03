@@ -12,6 +12,7 @@ type day =
   breakfast : int;
   lunch : int;
   dinner : int;
+  workout: int option
 }
 
 type user =
@@ -113,11 +114,12 @@ let add_day user =
   let new_day = {
     breakfast = 0;
     lunch = 0;
-    dinner = 0
+    dinner = 0;
+    workout = None
   } in
   { user with days = new_day :: user.days }
 
-let modify_day user =
+let modify_meal user =
   print_endline "1. Add breakfast";
   print_endline "2. Add lunch";
   print_endline "3. Add dinner";
@@ -128,7 +130,7 @@ let modify_day user =
       let () = print_endline "Enter calories: " in
       let calories = read_int () in
       match user.days with
-      | [] -> failwith "no existing days!"
+      | [] -> print_endline "No existing days!"; user
       | last_day :: xs ->
           let modified_day =
             match command with
@@ -137,21 +139,35 @@ let modify_day user =
             | _ -> { last_day with dinner = calories }
           in { user with days = modified_day :: xs }
   | _ -> user
+
+let modify_workout user =
+  let () = print_endline "Enter burned calories: " in
+  let calories = read_int () in
+  match user.days with
+  | [] -> print_endline "No existing days!"; user
+  | last_day :: xs ->
+      let modified_day = { last_day with workout = Some calories } in
+      { user with days = modified_day :: xs }
           
 let rec main_menu user =
   print_endline "1. Add a new day";
-  print_endline "2. Modify an existing day";
-  print_endline "3. Exit";
+  print_endline "2. Add a new meal";
+  print_endline "3. Add a workout";
+  print_endline "4. Exit";
   match read_line () with
   | "1" -> 
       let user = add_day user in
       print_endline "New day added!";
       main_menu user
   | "2" ->
-      let user = modify_day user in
-      print_endline "Existing day modified!";
+      let user = modify_meal user in
+      print_endline "New meal added!";
       main_menu user
-  | "3" -> ()
+  | "3" -> 
+      let user = modify_workout user in
+      print_endline "New workout added!";
+      main_menu user
+  | "4" -> ()
   | _ -> 
       print_endline "Invalid option! Try again";
       main_menu user
