@@ -18,8 +18,22 @@ type meal =
 }
 
 
+type month =
+| January | February | March | April | May | June | July
+| August | September | October | November | December
+
+
+type date =
+{
+  day : int;
+  month : month;
+  year : int;
+}
+
+
 type day =
 {
+  date : date;
   breakfast : meal option;
   snack_1 : meal option;
   lunch : meal option;
