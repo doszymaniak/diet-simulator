@@ -50,9 +50,11 @@ module User = struct
 
   let add_day user =
     let new_day = {
-      breakfast = 0;
-      lunch = 0;
-      dinner = 0;
+      breakfast = None;
+      snack_1 = None;
+      lunch = None;
+      snack_2 = None;
+      dinner = None;
       workout = None
     } in
     { user with days = new_day :: user.days }
@@ -60,22 +62,38 @@ module User = struct
 
   let modify_meal user =
     print_endline "1. Add breakfast";
-    print_endline "2. Add lunch";
-    print_endline "3. Add dinner";
-    print_endline "4. Exit";
+    print_endline "2. Add first snack";
+    print_endline "3. Add lunch";
+    print_endline "4. Add second snack";
+    print_endline "5. Add dinner";
+    print_endline "6. Exit";
     let command = read_line () in
     match command with
-    | "1" | "2" | "3" ->
+    | "1" | "2" | "3" | "4" | "5" ->
         let () = print_endline "Enter calories: " in
         let calories = read_int () in
+        let () = print_endline "Enter carbohydrates: " in
+        let carbs = read_int () in
+        let () = print_endline "Enter proteins: " in
+        let proteins = read_int () in
+        let () = print_endline "Enter fats: " in
+        let fats = read_int () in
+        let meal = {
+          calories = calories;
+          proteins = proteins;
+          carbohydrates = carbs;
+          fats = fats
+        } in
         match user.days with
         | [] -> print_endline "No existing days!"; user
         | last_day :: xs ->
             let modified_day =
               match command with
-              | "1" -> { last_day with breakfast = calories }
-              | "2" -> { last_day with lunch = calories }
-              | _ -> { last_day with dinner = calories }
+              | "1" -> { last_day with breakfast = Some meal }
+              | "2" -> { last_day with snack_1 = Some meal }
+              | "3" -> { last_day with lunch = Some meal }
+              | "4" -> { last_day with snack_2 = Some meal }
+              | _ -> { last_day with dinner = Some meal }
             in { user with days = modified_day :: xs }
     | _ -> user
 

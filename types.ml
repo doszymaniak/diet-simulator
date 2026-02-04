@@ -9,12 +9,23 @@ type gender =
 | Female
 
 
+type meal =
+{
+  calories : int;
+  proteins : int;
+  carbohydrates : int;
+  fats : int;
+}
+
+
 type day =
 {
-  breakfast : int;
-  lunch : int;
-  dinner : int;
-  workout: int option
+  breakfast : meal option;
+  snack_1 : meal option;
+  lunch : meal option;
+  snack_2 : meal option;
+  dinner : meal option;
+  workout: int option;
 }
 
 
