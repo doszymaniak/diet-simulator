@@ -1,13 +1,15 @@
 open User
 open Calories
 open Types
+open Report
 
 
 let rec main_menu user =
   print_endline "1. Add a new day";
   print_endline "2. Add a new meal";
   print_endline "3. Add a workout";
-  print_endline "4. Exit";
+  print_endline "4. Summarize a day";
+  print_endline "5. Exit";
   match read_line () with
   | "1" -> 
       let user = User.add_day user in
@@ -21,7 +23,8 @@ let rec main_menu user =
       let user = User.modify_workout user in
       print_endline "New workout added!";
       main_menu user
-  | "4" -> ()
+  | "4" -> Report.report_day user; main_menu user;
+  | "5" -> ()
   | _ -> 
       print_endline "Invalid option! Try again";
       main_menu user

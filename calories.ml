@@ -28,4 +28,18 @@ module Calories = struct
     else if workouts <= 4 then pal +. 0.1 
     else if workouts = 5 then pal +. 0.15
     else pal +. 0.2
+
+  
+  let calculate_day_total day =
+    let meal_cal meal =
+      match meal with
+      | Some meal -> meal.calories
+      | None -> 0
+    in
+    let breakfast = meal_cal day.breakfast in
+    let snack_1 = meal_cal day.snack_1 in
+    let lunch = meal_cal day.lunch in
+    let snack_2 = meal_cal day.snack_2 in
+    let dinner = meal_cal day.dinner in
+    breakfast + snack_1 + lunch + snack_2 + dinner
 end
