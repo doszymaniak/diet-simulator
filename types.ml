@@ -55,3 +55,14 @@ type user =
   calorie_intake : int;
   days : day list
 }
+
+
+type report =
+{
+  start_date : date;
+  end_date : date;
+  total_calories : int;
+  total_carbohydrates : int;
+  total_proteins : int;
+  total_fats: int;
+}
