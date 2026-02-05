@@ -38,7 +38,7 @@ let example_user = {
   height = 160;
   goal = Maintain;
   pal = 1.3;
-  calorie_intake = 2000.;
+  calorie_intake = 2000;
   days = [];
 }
 

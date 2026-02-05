@@ -52,6 +52,6 @@ type user =
   height : int;
   goal : goal;
   pal : float;
-  calorie_intake : float;
+  calorie_intake : int;
   days : day list
 }

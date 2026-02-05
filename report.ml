@@ -14,8 +14,16 @@ module Report = struct
 
   
   let print_summarization day user =
-    let total_calories = Calories.calculate_day_total day in
-    Printf.printf "You ate %d calories\n" total_calories
+    let total = Calories.calculate_day_total day in
+    Printf.printf "You ate %d calories, %d carbohydrates, %d proteins and %d fats.\n"
+      total.calories total.carbohydrates total.proteins total.fats;
+    
+    let diff = total.calories - user.calorie_intake in
+    if diff > 0 then
+      Printf.printf "That's %d calories above your calorie intake.\n" diff 
+    else if diff < 0 then
+      Printf.printf "That's %d calories under your calorie intake.\n" (-diff)
+    else Printf.printf "You reached your calorie intake.\n"
 
 
   let report_day user =

@@ -10,9 +10,9 @@ module Calories = struct
       | Male -> part +. 5.
     in let calories = bmr *. pal in
     match goal with
-    | Maintain -> calories
-    | Reduce _ -> calories -. 500.
-    | Gain _ -> calories +. 500.
+    | Maintain -> int_of_float calories
+    | Reduce _ -> int_of_float (calories -. 500.)
+    | Gain _ -> int_of_float (calories +. 500.)
 
 
   let calculate_pal steps workouts =
@@ -31,15 +31,22 @@ module Calories = struct
 
   
   let calculate_day_total day =
-    let meal_cal meal =
+    let empty = {
+      calories = 0;
+      proteins = 0;
+      carbohydrates = 0;
+      fats = 0;
+    } in
+    let meal_total total meal =
       match meal with
-      | Some meal -> meal.calories
-      | None -> 0
+      | Some meal -> {
+          calories = total.calories + meal.calories;
+          proteins = total.proteins + meal.proteins;
+          carbohydrates = total.carbohydrates + meal.carbohydrates;
+          fats = total.fats + meal.fats
+        }
+      | None -> total
     in
-    let breakfast = meal_cal day.breakfast in
-    let snack_1 = meal_cal day.snack_1 in
-    let lunch = meal_cal day.lunch in
-    let snack_2 = meal_cal day.snack_2 in
-    let dinner = meal_cal day.dinner in
-    breakfast + snack_1 + lunch + snack_2 + dinner
+    let meal_list = [day.breakfast; day.snack_1; day.lunch; day.snack_2; day.dinner] in
+    List.fold_left meal_total empty meal_list
 end
