@@ -50,17 +50,11 @@ module User = struct
 
 
   let add_day user =
-    let () = print_endline "Enter day: " in
-    let day = read_int () in
-    let () = print_endline "Enter month: " in
-    let month = read_line () in
-    let () = print_endline "Enter year: " in
-    let year = read_int () in
-    let month_opt = Utils.get_month month in
-    match month_opt with
-    | None -> print_endline "Invalid month!"; user
-    | Some month ->
-        let date = { day = day; month = month; year = year } in
+    let date_opt = Utils.get_date () in
+    match date_opt with
+    | None -> user
+    | Some date ->
+        print_endline "New day added!";
         let new_day = {
           date = date;
           breakfast = None;
@@ -68,7 +62,7 @@ module User = struct
           lunch = None;
           snack_2 = None;
           dinner = None;
-          workout = None
+          workout = None;
         } in
         { user with days = new_day :: user.days }
 

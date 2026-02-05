@@ -13,7 +13,6 @@ let rec main_menu user =
   match read_line () with
   | "1" -> 
       let user = User.add_day user in
-      print_endline "New day added!";
       main_menu user
   | "2" ->
       let user = User.modify_meal user in

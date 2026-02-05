@@ -39,17 +39,10 @@ module Report = struct
 
 
   let report_day user =
-    let () = print_endline "Enter day to summarize: " in
-    let day = read_int () in
-    let () = print_endline "Enter month: " in
-    let month = read_line () in
-    let () = print_endline "Enter year: " in
-    let year = read_int () in
-    let month_opt = Utils.get_month month in
-    match month_opt with
-    | None -> print_endline "Invalid month!"; ()
-    | Some month ->
-        let date = { day = day; month = month; year = year } in
+    let date_opt = Utils.get_date () in
+    match date_opt with
+    | None -> print_endline "Invalid data!"; ()
+    | Some date ->
         let day = find_day date user.days in
         match day with
         | None -> print_endline "Wrong day!"; ()
