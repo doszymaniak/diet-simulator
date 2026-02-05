@@ -65,4 +65,5 @@ type report =
   total_carbohydrates : int;
   total_proteins : int;
   total_fats: int;
+  report_days : day list
 }

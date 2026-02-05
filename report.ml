@@ -34,6 +34,7 @@ module Report = struct
       total_carbohydrates = total.carbohydrates;
       total_proteins = total.proteins;
       total_fats = total.fats;
+      report_days = [day];
     }
 
 
