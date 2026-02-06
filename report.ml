@@ -41,7 +41,7 @@ module Report = struct
   let report_day user =
     let date_opt = Utils.get_date () in
     match date_opt with
-    | None -> print_endline "Invalid data!"; ()
+    | None -> ()
     | Some date ->
         let day = find_day date user.days in
         match day with

@@ -1,5 +1,6 @@
 module Utils = struct
   open Types
+  open Validate
 
   
   let get_month str =
@@ -27,9 +28,10 @@ module Utils = struct
     let () = print_endline "Enter year: " in
     let year = read_int () in
     let month_opt = get_month month in
-    match month_opt with
-    | None -> print_endline "Invalid month!"; None
-    | Some month ->
-        let date = { day = day; month = month; year = year } in
-        Some date
+    if (Validate.validate_date day month_opt year) = false then
+      (print_endline "Invalid data!"; None)
+    else
+      let month = Option.get month_opt in
+      let date = { day = day; month = month; year = year } in
+      Some date
 end
