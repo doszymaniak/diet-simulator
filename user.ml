@@ -91,18 +91,25 @@ module User = struct
           carbohydrates = carbs;
           fats = fats
         } in
-        match user.days with
-        | [] -> print_endline "No existing days!"; user
-        | last_day :: xs ->
-            let modified_day =
-              match command with
-              | "1" -> { last_day with breakfast = Some meal }
-              | "2" -> { last_day with snack_1 = Some meal }
-              | "3" -> { last_day with lunch = Some meal }
-              | "4" -> { last_day with snack_2 = Some meal }
-              | _ -> { last_day with dinner = Some meal }
-            in { user with days = modified_day :: xs }
-    | _ -> user
+        let date = Utils.get_date () in
+        match date with
+        | None -> user
+        | Some date ->
+            let rec update days =
+              match days with
+              | [] -> []
+              | curr_day :: rest ->
+                  if curr_day.date = date then
+                    let modified_day = 
+                      match command with
+                      | "1" -> { curr_day with breakfast = Some meal }
+                      | "2" -> { curr_day with snack_1 = Some meal }
+                      | "3" -> { curr_day with lunch = Some meal }
+                      | "4" -> { curr_day with snack_2 = Some meal }
+                      | _ -> { curr_day with dinner = Some meal }
+                    in modified_day :: rest
+                  else curr_day :: update rest
+            in { user with days = update user.days }
 
 
   let modify_workout user =
