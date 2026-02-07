@@ -16,11 +16,9 @@ let rec main_menu user =
       main_menu user
   | "2" ->
       let user = User.modify_meal user in
-      print_endline "New meal added!";
       main_menu user
   | "3" -> 
       let user = User.modify_workout user in
-      print_endline "New workout added!";
       main_menu user
   | "4" -> Report.report_day user; main_menu user;
   | "5" -> ()

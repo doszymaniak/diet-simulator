@@ -91,13 +91,12 @@ module User = struct
           carbohydrates = carbs;
           fats = fats
         } in
-        let date = Utils.get_date () in
-        match date with
+        match Utils.get_date () with
         | None -> user
         | Some date ->
-            let rec update days =
+            let rec update days found =
               match days with
-              | [] -> []
+              | [] -> ([], found)
               | curr_day :: rest ->
                   if curr_day.date = date then
                     let modified_day = 
@@ -107,24 +106,35 @@ module User = struct
                       | "3" -> { curr_day with lunch = Some meal }
                       | "4" -> { curr_day with snack_2 = Some meal }
                       | _ -> { curr_day with dinner = Some meal }
-                    in modified_day :: rest
-                  else curr_day :: update rest
-            in { user with days = update user.days }
+                    in (modified_day :: rest, true)
+                  else 
+                    let (new_rest, found) = update rest found in
+                    (curr_day :: new_rest, found)
+            in 
+            let (new_days, found) = update user.days false in
+            if not found then print_endline "No day found with this date!"
+            else print_endline "New meal added!";
+            { user with days = new_days }
 
 
   let modify_workout user =
     let () = print_endline "Enter burned calories: " in
     let calories = read_int () in
-    let date = Utils.get_date () in
-    match date with
+    match Utils.get_date () with
     | None -> user
     | Some date ->
-        let rec update days =
+        let rec update days found =
           match days with
-          | [] -> []
+          | [] -> ([], false)
           | curr_day :: rest ->
               if curr_day.date = date then
-                { curr_day with workout = Some calories } :: rest
-              else curr_day :: update rest
-        in { user with days = update user.days }
+                ({ curr_day with workout = Some calories } :: rest, true)
+              else 
+                let (new_rest, found) = update rest found in
+                (curr_day :: new_rest, found)
+        in 
+        let (new_days, found) = update user.days false in
+        if not found then print_endline "No day found with this date!"
+        else print_endline "New workout added!";
+        { user with days = new_days }
 end
