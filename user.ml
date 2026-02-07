@@ -108,9 +108,16 @@ module User = struct
   let modify_workout user =
     let () = print_endline "Enter burned calories: " in
     let calories = read_int () in
-    match user.days with
-    | [] -> print_endline "No existing days!"; user
-    | last_day :: xs ->
-        let modified_day = { last_day with workout = Some calories } in
-        { user with days = modified_day :: xs }
+    let date = Utils.get_date () in
+    match date with
+    | None -> user
+    | Some date ->
+        let rec update days =
+          match days with
+          | [] -> []
+          | curr_day :: rest ->
+              if curr_day.date = date then
+                { curr_day with workout = Some calories } :: rest
+              else curr_day :: update rest
+        in { user with days = update user.days }
 end
