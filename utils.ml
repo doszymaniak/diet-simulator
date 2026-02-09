@@ -20,6 +20,22 @@ module Utils = struct
     | _ -> None
 
   
+  let map_month month =
+    match month with
+    | January -> 1
+    | February -> 2
+    | March -> 3
+    | April -> 4
+    | May -> 5
+    | June -> 6
+    | July -> 7
+    | August -> 8
+    | September -> 9
+    | October -> 10
+    | November -> 11
+    | December -> 12
+
+  
   let get_date () =
     let () = print_endline "Enter day: " in
     let day = read_int () in
@@ -34,4 +50,18 @@ module Utils = struct
       let month = Option.get month_opt in
       let date = { day = day; month = month; year = year } in
       Some date
+
+
+  let compare_dates date1 date2 =
+    if date1.year < date2.year then -1
+    else if date1.year > date2.year then 1
+    else
+      let first_month_num = map_month date1.month in
+      let second_month_num = map_month date2.month in
+      if first_month_num < second_month_num then -1
+      else if first_month_num > second_month_num then 1
+      else 
+        if date1.day < date2.day then -1
+        else if date1.day > date2.day then 1
+        else 0
 end

@@ -9,7 +9,8 @@ let rec main_menu user =
   print_endline "2. Add a new meal";
   print_endline "3. Add a workout";
   print_endline "4. Summarize a day";
-  print_endline "5. Exit";
+  print_endline "5. Summarize a date range";
+  print_endline "6. Exit";
   match read_line () with
   | "1" -> 
       let user = User.add_day user in
@@ -21,7 +22,8 @@ let rec main_menu user =
       let user = User.modify_workout user in
       main_menu user
   | "4" -> Report.report_day user; main_menu user;
-  | "5" -> ()
+  | "5" -> Report.report_range user; main_menu user;
+  | "6" -> ()
   | _ -> 
       print_endline "Invalid option! Try again";
       main_menu user

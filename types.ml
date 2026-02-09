@@ -59,8 +59,8 @@ type user =
 
 type report =
 {
-  start_date : date;
-  end_date : date;
+  start_date : date option;
+  end_date : date option;
   total_calories : int;
   total_carbohydrates : int;
   total_proteins : int;
