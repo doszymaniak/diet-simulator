@@ -2,6 +2,7 @@ open User
 open Calories
 open Types
 open Report
+open Simulation
 
 
 let rec main_menu user =
@@ -10,7 +11,8 @@ let rec main_menu user =
   print_endline "3. Add a workout";
   print_endline "4. Summarize a day";
   print_endline "5. Summarize a date range";
-  print_endline "6. Exit";
+  print_endline "6. Simulate weight change";
+  print_endline "7. Exit";
   match read_line () with
   | "1" -> 
       let user = User.add_day user in
@@ -23,7 +25,8 @@ let rec main_menu user =
       main_menu user
   | "4" -> Report.report_day user; main_menu user;
   | "5" -> Report.report_range user; main_menu user;
-  | "6" -> ()
+  | "6" -> Simulation.simulate_weight user; main_menu user;
+  | "7" -> ()
   | _ -> 
       print_endline "Invalid option! Try again";
       main_menu user
@@ -45,7 +48,7 @@ let example_user = {
 let () =
   print_endline "Welcome!";
   (*
-  let user = create_new_user () in
+  let user = User.create_new_user () in
   main_menu user
   *)
   let user = example_user in main_menu user

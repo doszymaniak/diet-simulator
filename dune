@@ -1,4 +1,4 @@
 (executable
  (name main)
- (modules main report user calories types utils validate)
+ (modules main report user calories types utils validate simulation)
  (flags (:standard -w -a)))
