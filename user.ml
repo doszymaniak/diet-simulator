@@ -137,4 +137,21 @@ module User = struct
         if not found then print_endline "No day found with this date!"
         else print_endline "New workout added!";
         { user with days = new_days }
+
+    
+  let update_goal user =
+    let () = print_endline "Enter the goal you would like to reach (R/M/G): " in
+    let option = read_line () in
+    let new_goal_opt =
+      match option with
+      | "R" | "G" -> let () = print_endline "Enter your goal weight: " in
+          let goal_weight = read_float () in
+          if option = "R" then if goal_weight > user.weight then None else Some (Reduce goal_weight)
+          else if goal_weight < user.weight then None else Some (Gain goal_weight)
+      | "M" -> Some (Maintain)
+      | _ -> None
+    in 
+    match new_goal_opt with
+    | None -> print_endline "Failed to change the goal!"; user
+    | Some goal -> print_endline "Goal updated successfully!"; { user with goal = goal }
 end
