@@ -12,7 +12,8 @@ let rec main_menu user =
   print_endline "4. Summarize a day";
   print_endline "5. Summarize a date range";
   print_endline "6. Simulate weight change";
-  print_endline "7. Exit";
+  print_endline "7. Simulate weight change - 'what if' scenario";
+  print_endline "8. Exit";
   match read_line () with
   | "1" -> 
       let user = User.add_day user in
@@ -26,7 +27,8 @@ let rec main_menu user =
   | "4" -> Report.report_day user; main_menu user;
   | "5" -> Report.report_range user; main_menu user;
   | "6" -> Simulation.simulate_weight user; main_menu user;
-  | "7" -> ()
+  | "7" -> Simulation.simulate_weight_scenario user; main_menu user;
+  | "8" -> ()
   | _ -> 
       print_endline "Invalid option! Try again";
       main_menu user
