@@ -35,24 +35,25 @@ let rec main_menu user =
       main_menu user
 
 
-let example_user = {
-  name = "Anna";
-  age = 20;
-  gender = Female;
-  weight = 60.;
-  height = 160;
-  goal = Maintain;
-  pal = 1.3;
-  calorie_intake = 2000;
-  days = [];
-}
+let rec intro () =
+  print_endline "Choose: ";
+  print_endline "1. Load user data from file";
+  print_endline "2. Enter user data";
+  let option = read_line () in
+  match option with
+  | "1" -> 
+      let () = print_endline "Enter name of file: " in
+      let filename = read_line () in
+      let user = User_json.load_user filename in
+      begin match user with
+      | Some user -> main_menu user
+      | None -> 
+          let () = print_endline "Failed to load file!" in intro () end
+  | "2" -> 
+      let user = User.create_new_user () in main_menu user
+  | _ -> let () = print_endline "Invalid option!" in intro ()
 
 
 let () =
   print_endline "Welcome!";
-  (*
-  let user = User.create_new_user () in
-  main_menu user
-  let user = example_user in main_menu user
-  *)
-  let user = User_json.load_user "user.json" in main_menu user
+  intro ()

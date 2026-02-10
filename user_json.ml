@@ -42,5 +42,8 @@ module User_json = struct
 
   
   let load_user filename =
-    let json = from_file filename in user_of_json json
+    try
+      let json = from_file filename in Some (user_of_json json)
+    with
+    | _ -> None
 end
