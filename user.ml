@@ -54,17 +54,21 @@ module User = struct
     match date_opt with
     | None -> user
     | Some date ->
-        print_endline "New day added!";
-        let new_day = {
-          date = date;
-          breakfast = None;
-          snack_1 = None;
-          lunch = None;
-          snack_2 = None;
-          dinner = None;
-          workout = None;
-        } in
-        { user with days = new_day :: user.days }
+        match user.days with
+        | last_day :: _ when Utils.compare_dates date last_day.date <= 0 ->
+            print_endline "New date must be later than the last added day"; user
+        | _ ->
+            print_endline "New day added!";
+            let new_day = {
+              date = date;
+              breakfast = None;
+              snack_1 = None;
+              lunch = None;
+              snack_2 = None;
+              dinner = None;
+              workout = None;
+            } in
+            { user with days = new_day :: user.days }
 
 
   let modify_meal user =
