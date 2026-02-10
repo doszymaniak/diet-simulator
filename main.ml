@@ -21,24 +21,35 @@ let rec main_menu user =
   match read_line () with
   | "1" -> 
       let user = User.add_day user in
-      main_menu user
+      continue user
   | "2" ->
       let user = User.modify_meal user in
-      main_menu user
+      continue user
   | "3" -> 
       let user = User.modify_workout user in
-      main_menu user
-  | "4" -> Report.report_day user; main_menu user;
-  | "5" -> Report.report_range user; main_menu user;
-  | "6" -> Simulation.simulate_weight user; main_menu user;
-  | "7" -> Simulation.simulate_weight_scenario user; main_menu user;
-  | "8" -> let user = User.update_goal user in main_menu user;
-  | "9" -> User.check_goal user; main_menu user;
-  | "10" -> User.print_added_days user; main_menu user;
+      continue user
+  | "4" -> Report.report_day user; continue user;
+  | "5" -> Report.report_range user; continue user;
+  | "6" -> Simulation.simulate_weight user; continue user;
+  | "7" -> Simulation.simulate_weight_scenario user; continue user;
+  | "8" -> let user = User.update_goal user in continue user;
+  | "9" -> User.check_goal user; continue user;
+  | "10" -> User.print_added_days user; continue user;
   | "11" -> ()
   | _ -> 
       print_endline "Invalid option! Try again";
       main_menu user
+
+
+and continue user =
+  let () = print_endline "Do you want to continue? (Y/N): " in
+  let command = read_line () in
+  match command with
+  | "Y" | "y" -> main_menu user
+  | "N" | "n" -> ()
+  | _ ->
+      print_endline "Invalid option! Try again";
+      continue user
 
 
 let rec intro () =

@@ -12,8 +12,8 @@ module User = struct
     let () = print_endline "Enter your gender (F/M): " in
     let gender = 
       match read_line () with
-      | "F" -> Female
-      | "M" -> Male
+      | "F" | "f" -> Female
+      | "M" | "m" -> Male
       | _ -> failwith "invalid gender!"
     in
     let () = print_endline "Enter your current weight: " in
