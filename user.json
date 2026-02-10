@@ -1,0 +1,10 @@
+{
+    "name": "Anna",
+    "age": 20,
+    "gender": "Female",
+    "weight": 64.2,
+    "height": 168,
+    "goal": {"Reduce": 60.0},
+    "pal": 1.3,
+    "calorie_intake": 1845
+}

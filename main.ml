@@ -3,6 +3,7 @@ open Calories
 open Types
 open Report
 open Simulation
+open User_json
 
 
 let rec main_menu user =
@@ -52,5 +53,6 @@ let () =
   (*
   let user = User.create_new_user () in
   main_menu user
-  *)
   let user = example_user in main_menu user
+  *)
+  let user = User_json.load_user "user.json" in main_menu user
