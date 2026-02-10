@@ -9,6 +9,7 @@ module Report = struct
     start_date = None;
     end_date = None;
     total_calories = 0;
+    calories_burned = 0;
     total_carbohydrates = 0;
     total_proteins = 0;
     total_fats = 0;
@@ -26,6 +27,8 @@ module Report = struct
 
   
   let print_report report user =
+    Printf.printf "You burned %d calories in workouts.\n" report.calories_burned;
+    
     Printf.printf "You ate %d calories, %d carbohydrates, %d proteins and %d fats.\n"
       report.total_calories report.total_carbohydrates report.total_proteins report.total_fats;
     
@@ -39,10 +42,16 @@ module Report = struct
   
   let add_day_report day report =
     let total = Calories.calculate_day_total day in
+    let workout = 
+      match day.workout with
+      | None -> 0
+      | Some x -> x
+    in
     {
       start_date = report.start_date;
       end_date = report.end_date;
       total_calories = report.total_calories + total.calories;
+      calories_burned = report.calories_burned + workout;
       total_carbohydrates = report.total_carbohydrates + total.carbohydrates;
       total_proteins = report.total_proteins + total.proteins;
       total_fats = report.total_fats + total.fats;

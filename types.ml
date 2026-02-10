@@ -62,6 +62,7 @@ type report =
   start_date : date option;
   end_date : date option;
   total_calories : int;
+  calories_burned : int;
   total_carbohydrates : int;
   total_proteins : int;
   total_fats: int;
