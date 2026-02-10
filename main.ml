@@ -15,7 +15,9 @@ let rec main_menu user =
   print_endline "6. Simulate weight change";
   print_endline "7. Simulate weight change - 'what if' scenario";
   print_endline "8. Update your goal";
-  print_endline "9. Exit";
+  print_endline "9. Check your calorie intake and goal";
+  print_endline "10. Print added days";
+  print_endline "11. Exit";
   match read_line () with
   | "1" -> 
       let user = User.add_day user in
@@ -31,7 +33,9 @@ let rec main_menu user =
   | "6" -> Simulation.simulate_weight user; main_menu user;
   | "7" -> Simulation.simulate_weight_scenario user; main_menu user;
   | "8" -> let user = User.update_goal user in main_menu user;
-  | "9" -> ()
+  | "9" -> User.check_goal user; main_menu user;
+  | "10" -> User.print_added_days user; main_menu user;
+  | "11" -> ()
   | _ -> 
       print_endline "Invalid option! Try again";
       main_menu user

@@ -154,4 +154,25 @@ module User = struct
     match new_goal_opt with
     | None -> print_endline "Failed to change the goal!"; user
     | Some goal -> print_endline "Goal updated successfully!"; { user with goal = goal }
+
+
+  let check_goal user =
+    let goal_str =
+      match user.goal with
+      | Maintain -> "maintain weight"
+      | Reduce w -> Printf.sprintf "reduce to %.1f kg" w
+      | Gain w -> Printf.sprintf "gain to %.1f kg" w
+    in
+    Printf.printf "Your daily calorie intake: %d kcal\n" user.calorie_intake;
+    Printf.printf "Your goal: %s\n" goal_str
+
+
+  let print_added_days user =
+    match user.days with
+    | [] -> print_endline "No days added yet!"
+    | _ ->
+        print_endline "Your added days: ";
+        List.iter (fun d ->
+          Printf.printf "- %02d-%02d-%d\n" d.date.day (Utils.map_month d.date.month) d.date.year
+        ) (List.rev user.days)
 end
