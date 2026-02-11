@@ -1,0 +1,4 @@
+(library
+ (name diet_simulator)
+ (modules (:standard))
+ (libraries yojson))

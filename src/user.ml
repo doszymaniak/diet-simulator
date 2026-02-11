@@ -85,7 +85,7 @@ module User = struct
           carbohydrates = carbs;
           fats = fats
         } in
-        match Utils.get_date () with
+        begin match Utils.get_date () with
         | None -> user
         | Some date ->
             let rec update days =
@@ -110,7 +110,8 @@ module User = struct
             let (new_days, found) = update user.days in
             if not found then print_endline "No day found with this date!"
             else print_endline "New meal added!";
-            { user with days = new_days }
+            { user with days = new_days } end
+    | _ -> user
 
 
   let modify_workout user =

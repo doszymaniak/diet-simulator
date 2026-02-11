@@ -1,5 +1,4 @@
 (executable
  (name main)
- (libraries yojson)
- (modules main report user calories types utils validate simulation user_json)
- (flags (:standard -w -a)))
+ (modules main)
+ (libraries diet_simulator yojson))

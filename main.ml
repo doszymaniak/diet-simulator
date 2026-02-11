@@ -1,9 +1,7 @@
-open User
-open Calories
-open Types
-open Report
-open Simulation
-open User_json
+open Diet_simulator.User
+open Diet_simulator.Report
+open Diet_simulator.Simulation
+open Diet_simulator.User_json
 
 
 let rec main_menu user =
