@@ -1,5 +1,6 @@
 module Simulation = struct
   open Types
+  open Utils
 
 
   let kcal_per_kg = 7700.
@@ -15,8 +16,7 @@ module Simulation = struct
 
 
   let simulate_weight user =
-    let () = print_endline "Enter days to simulate: " in
-    let days = read_int () in
+    let days = Utils.read_int_safe "Enter days to simulate: " in
     let daily_diff =
       begin match user.goal with
       | Maintain -> 0.
@@ -26,15 +26,12 @@ module Simulation = struct
 
 
   let simulate_weight_scenario user =
-    let () = print_endline "Enter days to simulate: " in
-    let days = read_int () in
+    let days = Utils.read_int_safe "Enter days to simulate: " in
     let () = print_endline "On which day would you like to eat a different number of calories?" in
-    let () = print_endline "Enter the day number: " in
-    let day = read_int () in
+    let day = Utils.read_int_safe "Enter the day number: " in
     if day <= 0 || day > days then print_endline "Invalid day number!"
     else
-      let () = print_endline "Enter the number of calories you would like to eat on this day: " in
-      let special_calories = read_int () in
+      let special_calories = Utils.read_int_safe "Enter the number of calories you would like to eat on this day: " in
       let daily_diff =
         begin match user.goal with
         | Maintain -> 0.

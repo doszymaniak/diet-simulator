@@ -35,14 +35,28 @@ module Utils = struct
     | November -> 11
     | December -> 12
 
+    
+  let rec read_int_safe prompt =
+    print_endline prompt;
+    try int_of_string (read_line ())
+    with Failure _ ->
+      print_endline "Invalid input! Please enter a number";
+      read_int_safe prompt
+
+  
+  let rec read_float_safe prompt =
+    print_endline prompt;
+    try float_of_string (read_line ())
+    with Failure _ ->
+      print_endline "Invalid input! Please enter a decimal number";
+      read_float_safe prompt
+
   
   let get_date () =
-    let () = print_endline "Enter day: " in
-    let day = read_int () in
+    let day = read_int_safe "Enter day: " in
     let () = print_endline "Enter month: " in
     let month = read_line () in
-    let () = print_endline "Enter year: " in
-    let year = read_int () in
+    let year = read_int_safe "Enter year: " in
     let month_opt = get_month month in
     if (Validate.validate_date day month_opt year) = false then
       (print_endline "Invalid data!"; None)

@@ -7,8 +7,7 @@ module User = struct
   let create_new_user () =
     let () = print_endline "Enter your name: " in
     let name = read_line () in
-    let () = print_endline "Enter your age: " in
-    let age = read_int () in 
+    let age = Utils.read_int_safe "Enter your age: " in 
     let () = print_endline "Enter your gender (F/M): " in
     let gender = 
       match read_line () with
@@ -16,23 +15,18 @@ module User = struct
       | "M" | "m" -> Male
       | _ -> failwith "invalid gender!"
     in
-    let () = print_endline "Enter your current weight: " in
-    let weight = read_float () in
-    let () = print_endline "Enter your current height: " in
-    let height = read_int () in
+    let weight = Utils.read_float_safe "Enter your current weight: " in
+    let height = Utils.read_int_safe "Enter your current height: " in
     let () = print_endline "Enter your current goal (R/M/G): " in
     let goal = read_line () in
     let goal = 
       if goal = "R" || goal = "G" then
-        let () = print_endline "Enter your goal weight: " in
-        let goal_weight = read_float () in 
+        let goal_weight = Utils.read_float_safe "Enter your goal weight: " in 
         if goal = "R" then Reduce goal_weight else Gain goal_weight
       else Maintain
     in
-    let () = print_endline "Enter a number of steps you take per day: " in
-    let steps = read_int () in
-    let () = print_endline "Enter a number of workouts you do per week: " in
-    let workouts = read_int () in
+    let steps = Utils.read_int_safe "Enter a number of steps you take per day: " in
+    let workouts = Utils.read_int_safe "Enter a number of workouts you do per week: " in
     let pal = Calories.calculate_pal steps workouts in
     let calorie_intake = Calories.calculate_calorie_intake gender age weight height pal goal in
     let new_user = {
@@ -81,14 +75,10 @@ module User = struct
     let command = read_line () in
     match command with
     | "1" | "2" | "3" | "4" | "5" ->
-        let () = print_endline "Enter calories: " in
-        let calories = read_int () in
-        let () = print_endline "Enter carbohydrates: " in
-        let carbs = read_int () in
-        let () = print_endline "Enter proteins: " in
-        let proteins = read_int () in
-        let () = print_endline "Enter fats: " in
-        let fats = read_int () in
+        let calories = Utils.read_int_safe "Enter calories: " in
+        let carbs = Utils.read_int_safe "Enter carbohydrates: " in
+        let proteins = Utils.read_int_safe "Enter proteins: " in
+        let fats = Utils.read_int_safe "Enter fats: " in
         let meal = {
           calories = calories;
           proteins = proteins;
@@ -122,8 +112,7 @@ module User = struct
 
 
   let modify_workout user =
-    let () = print_endline "Enter burned calories: " in
-    let calories = read_int () in
+    let calories = Utils.read_int_safe "Enter burned calories: " in
     match Utils.get_date () with
     | None -> user
     | Some date ->
@@ -148,8 +137,8 @@ module User = struct
     let option = read_line () in
     let new_goal_opt =
       match option with
-      | "R" | "G" -> let () = print_endline "Enter your goal weight: " in
-          let goal_weight = read_float () in
+      | "R" | "G" ->
+          let goal_weight = Utils.read_float_safe "Enter your goal weight: " in
           if option = "R" then if goal_weight > user.weight then None else Some (Reduce goal_weight)
           else if goal_weight < user.weight then None else Some (Gain goal_weight)
       | "M" -> Some (Maintain)
