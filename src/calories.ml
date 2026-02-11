@@ -30,27 +30,6 @@ module Calories = struct
     else if workouts = 5 then pal +. 0.15
     else pal +. 0.2
 
-
-  let calculate_day_total day =
-    let empty = {
-      calories = 0;
-      proteins = 0;
-      carbohydrates = 0;
-      fats = 0;
-    } in
-    let meal_total total meal =
-      match meal with
-      | Some meal -> {
-          calories = total.calories + meal.calories;
-          proteins = total.proteins + meal.proteins;
-          carbohydrates = total.carbohydrates + meal.carbohydrates;
-          fats = total.fats + meal.fats
-        }
-      | None -> total
-    in
-    let meal_list = [day.breakfast; day.snack_1; day.lunch; day.snack_2; day.dinner] in
-    List.fold_left meal_total empty meal_list
-
     
   let lazy_total_calories days =
     lazy (List.fold_left (fun acc day ->
