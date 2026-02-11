@@ -78,4 +78,7 @@ module Utils = struct
         if date1.day < date2.day then -1
         else if date1.day > date2.day then 1
         else 0
+
+  
+  let get_meals day = [day.breakfast; day.snack_1; day.lunch; day.snack_2; day.dinner]
 end
