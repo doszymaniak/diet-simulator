@@ -88,9 +88,9 @@ module User = struct
         match Utils.get_date () with
         | None -> user
         | Some date ->
-            let rec update days found =
+            let rec update days =
               match days with
-              | [] -> ([], found)
+              | [] -> ([], false)
               | curr_day :: rest ->
                   if curr_day.date = date then
                     let modified_day = 
@@ -100,12 +100,14 @@ module User = struct
                       | "3" -> { curr_day with lunch = Some meal }
                       | "4" -> { curr_day with snack_2 = Some meal }
                       | _ -> { curr_day with dinner = Some meal }
-                    in (modified_day :: rest, true)
+                    in
+                    let rest_days, _ = update rest in
+                    (modified_day :: rest_days, true)
                   else 
-                    let (new_rest, found) = update rest found in
+                    let (new_rest, found) = update rest in
                     (curr_day :: new_rest, found)
             in 
-            let (new_days, found) = update user.days false in
+            let (new_days, found) = update user.days in
             if not found then print_endline "No day found with this date!"
             else print_endline "New meal added!";
             { user with days = new_days }
@@ -116,17 +118,17 @@ module User = struct
     match Utils.get_date () with
     | None -> user
     | Some date ->
-        let rec update days found =
+        let rec update days =
           match days with
           | [] -> ([], false)
           | curr_day :: rest ->
               if curr_day.date = date then
                 ({ curr_day with workout = Some calories } :: rest, true)
               else 
-                let (new_rest, found) = update rest found in
+                let (new_rest, found) = update rest in
                 (curr_day :: new_rest, found)
         in 
-        let (new_days, found) = update user.days false in
+        let (new_days, found) = update user.days in
         if not found then print_endline "No day found with this date!"
         else print_endline "New workout added!";
         { user with days = new_days }
