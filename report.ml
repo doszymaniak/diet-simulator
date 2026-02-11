@@ -8,11 +8,11 @@ module Report = struct
   {
     start_date = None;
     end_date = None;
-    total_calories = 0;
-    calories_burned = 0;
-    total_carbohydrates = 0;
-    total_proteins = 0;
-    total_fats = 0;
+    total_calories = lazy 0;
+    calories_burned = lazy 0;
+    total_carbohydrates = lazy 0;
+    total_proteins = lazy 0;
+    total_fats = lazy 0;
     report_days = [];
   }
 
@@ -27,12 +27,13 @@ module Report = struct
 
   
   let print_report report user =
-    Printf.printf "You burned %d calories in workouts.\n" report.calories_burned;
+    Printf.printf "You burned %d calories in workouts.\n" (Lazy.force report.calories_burned);
     
     Printf.printf "You ate %d calories, %d carbohydrates, %d proteins and %d fats.\n"
-      report.total_calories report.total_carbohydrates report.total_proteins report.total_fats;
+      (Lazy.force report.total_calories) (Lazy.force report.total_carbohydrates)
+       (Lazy.force report.total_proteins) (Lazy.force report.total_fats);
     
-    let diff = report.total_calories - user.calorie_intake in
+    let diff = (Lazy.force report.total_calories) - user.calorie_intake in
     if diff > 0 then
       Printf.printf "That's %d calories above your calorie intake.\n" diff 
     else if diff < 0 then
@@ -50,11 +51,11 @@ module Report = struct
     {
       start_date = report.start_date;
       end_date = report.end_date;
-      total_calories = report.total_calories + total.calories;
-      calories_burned = report.calories_burned + workout;
-      total_carbohydrates = report.total_carbohydrates + total.carbohydrates;
-      total_proteins = report.total_proteins + total.proteins;
-      total_fats = report.total_fats + total.fats;
+      total_calories = lazy (Lazy.force report.total_calories + total.calories);
+      calories_burned = lazy (Lazy.force report.calories_burned + workout);
+      total_carbohydrates = lazy (Lazy.force report.total_carbohydrates + total.carbohydrates);
+      total_proteins = lazy (Lazy.force report.total_proteins + total.proteins);
+      total_fats = lazy (Lazy.force report.total_fats + total.fats);
       report_days = day :: report.report_days;
     }
 

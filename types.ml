@@ -61,10 +61,10 @@ type report =
 {
   start_date : date option;
   end_date : date option;
-  total_calories : int;
-  calories_burned : int;
-  total_carbohydrates : int;
-  total_proteins : int;
-  total_fats: int;
+  total_calories : int Lazy.t;
+  calories_burned : int Lazy.t;
+  total_carbohydrates : int Lazy.t;
+  total_proteins : int Lazy.t;
+  total_fats: int Lazy.t;
   report_days : day list
 }
