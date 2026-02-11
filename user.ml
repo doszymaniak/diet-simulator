@@ -146,7 +146,11 @@ module User = struct
     in 
     match new_goal_opt with
     | None -> print_endline "Failed to change the goal!"; user
-    | Some goal -> print_endline "Goal updated successfully!"; { user with goal = goal }
+    | Some goal -> 
+        print_endline "Goal updated successfully!";
+        let new_calorie_intake = Calories.calculate_calorie_intake user.gender
+          user.age user.weight user.height user.pal goal in
+        { user with goal = goal; calorie_intake = new_calorie_intake }
 
 
   let check_goal user =
