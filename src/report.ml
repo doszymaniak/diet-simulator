@@ -75,8 +75,8 @@ module Report = struct
       | [] -> List.rev curr
       | curr_day :: rest ->
           let d = curr_day.date in
-          if Utils.compare_dates d end_date = 1 then List.rev curr
-          else if Utils.compare_dates d start_date = -1 then aux curr rest
+          if Utils.compare_dates d start_date = -1 then List.rev curr
+          else if Utils.compare_dates d end_date = 1 then aux curr rest
           else aux (curr_day :: curr) rest
     in aux [] days
   
