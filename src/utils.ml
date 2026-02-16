@@ -81,4 +81,11 @@ module Utils = struct
 
   
   let get_meals day = [day.breakfast; day.snack_1; day.lunch; day.snack_2; day.dinner]
+
+
+  let print_day_list days =
+    let days = List.rev days in
+    List.iteri (fun i d ->
+      Printf.printf "%d. %02d-%02d-%d\n" (i + 1) d.date.day (map_month d.date.month) d.date.year
+    ) days
 end

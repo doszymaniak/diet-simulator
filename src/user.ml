@@ -172,7 +172,5 @@ module User = struct
     | [] -> print_endline "No days added yet!"
     | _ ->
         print_endline "Your added days: ";
-        List.iter (fun d ->
-          Printf.printf "- %02d-%02d-%d\n" d.date.day (Utils.map_month d.date.month) d.date.year
-        ) (List.rev user.days)
+        Utils.print_day_list user.days
 end
