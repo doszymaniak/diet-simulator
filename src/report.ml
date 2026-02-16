@@ -27,13 +27,18 @@ module Report = struct
 
   
   let print_report report user =
-    Printf.printf "You burned %d calories in workouts.\n" (Lazy.force report.calories_burned);
-    
+    let burned = Lazy.force report.calories_burned in
+    let total_cal = Lazy.force report.total_calories in
+    let total_carbs = Lazy.force report.total_carbohydrates in
+    let total_proteins = Lazy.force report.total_proteins in
+    let total_fats = Lazy.force report.total_fats in
+
+    Printf.printf "You burned %d calories in workouts.\n" burned;
+  
     Printf.printf "You ate %d calories, %d carbohydrates, %d proteins and %d fats.\n"
-      (Lazy.force report.total_calories) (Lazy.force report.total_carbohydrates)
-       (Lazy.force report.total_proteins) (Lazy.force report.total_fats);
+      total_cal total_carbs total_proteins total_fats;
     
-    let diff = (Lazy.force report.total_calories) - user.calorie_intake in
+    let diff = total_cal - user.calorie_intake - burned in
     if diff > 0 then
       Printf.printf "That's %d calories above your calorie intake.\n" diff 
     else if diff < 0 then
