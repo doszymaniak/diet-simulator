@@ -84,8 +84,21 @@ module Utils = struct
 
 
   let print_day_list days =
-    let days = List.rev days in
     List.iteri (fun i d ->
       Printf.printf "%d. %02d-%02d-%d\n" (i + 1) d.date.day (map_month d.date.month) d.date.year
     ) days
+
+
+  let rec choose_day days =
+    let option = read_int_safe "Enter a day number: " in
+    let rec aux list cnt =
+      match list with
+      | [] -> None
+      | x :: xs ->
+          if cnt = option - 1 then Some x
+          else aux xs (cnt + 1)
+    in 
+    match aux days 0 with
+    | None -> print_endline "Invalid day number! Try again!"; choose_day days
+    | Some day -> day
 end

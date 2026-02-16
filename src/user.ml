@@ -172,5 +172,5 @@ module User = struct
     | [] -> print_endline "No days added yet!"
     | _ ->
         print_endline "Your added days: ";
-        Utils.print_day_list user.days
+        Utils.print_day_list (List.rev user.days)
 end
