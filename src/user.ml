@@ -7,26 +7,13 @@ module User = struct
   let create_new_user () =
     let () = print_endline "Enter your name: " in
     let name = read_line () in
-    let age = Utils.read_int_safe "Enter your age: " in 
-    let () = print_endline "Enter your gender (F/M): " in
-    let gender = 
-      match read_line () with
-      | "F" | "f" -> Female
-      | "M" | "m" -> Male
-      | _ -> failwith "invalid gender!"
-    in
-    let weight = Utils.read_float_safe "Enter your current weight: " in
-    let height = Utils.read_int_safe "Enter your current height: " in
-    let () = print_endline "Enter your current goal (R/M/G): " in
-    let goal = read_line () in
-    let goal = 
-      if goal = "R" || goal = "G" then
-        let goal_weight = Utils.read_float_safe "Enter your goal weight: " in 
-        if goal = "R" then Reduce goal_weight else Gain goal_weight
-      else Maintain
-    in
-    let steps = Utils.read_int_safe "Enter a number of steps you take per day: " in
-    let workouts = Utils.read_int_safe "Enter a number of workouts you do per week: " in
+    let age = Utils.read_age_safe () in
+    let gender = Utils.read_gender_safe () in
+    let weight = Utils.read_weight_safe () in
+    let height = Utils.read_height_safe () in
+    let goal = Utils.read_goal_safe weight in
+    let steps = Utils.read_steps_safe () in
+    let workouts = Utils.read_workouts_safe () in
     let pal = Calories.calculate_pal steps workouts in
     let calorie_intake = Calories.calculate_calorie_intake gender age weight height pal goal in
     let new_user = {
@@ -132,24 +119,11 @@ module User = struct
 
     
   let update_goal user =
-    let () = print_endline "Enter the goal you would like to reach (R/M/G): " in
-    let option = read_line () in
-    let new_goal_opt =
-      match option with
-      | "R" | "G" ->
-          let goal_weight = Utils.read_float_safe "Enter your goal weight: " in
-          if option = "R" then if goal_weight > user.weight then None else Some (Reduce goal_weight)
-          else if goal_weight < user.weight then None else Some (Gain goal_weight)
-      | "M" -> Some (Maintain)
-      | _ -> None
-    in 
-    match new_goal_opt with
-    | None -> print_endline "Failed to change the goal!"; user
-    | Some goal -> 
-        print_endline "Goal updated successfully!";
-        let new_calorie_intake = Calories.calculate_calorie_intake user.gender
-          user.age user.weight user.height user.pal goal in
-        { user with goal = goal; calorie_intake = new_calorie_intake }
+    let goal = Utils.read_goal_safe user.weight in
+    print_endline "Goal updated successfully!";
+    let new_calorie_intake = Calories.calculate_calorie_intake user.gender
+      user.age user.weight user.height user.pal goal in
+    { user with goal = goal; calorie_intake = new_calorie_intake }
 
 
   let check_goal user =
