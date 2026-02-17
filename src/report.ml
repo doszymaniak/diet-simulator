@@ -60,18 +60,11 @@ module Report = struct
 
 
   let report_day user =
-    let date_opt = Utils.get_date () in
-    match date_opt with
-    | None -> ()
-    | Some date ->
-        let day = find_day date user.days in
-        match day with
-        | None -> print_endline "Wrong day!"; ()
-        | Some day ->
-            let report = { empty_report with start_date = Some day.date } in
-            let report = { report with end_date = Some day.date } in
-            let report = add_day_report day report in
-            print_report report user
+    let day = Utils.choose_day user.days in
+    let report = { empty_report with start_date = Some day.date } in
+    let report = { report with end_date = Some day.date } in
+    let report = add_day_report day report in
+    print_report report user
 
 
   let list_days_in_range start_date end_date days =
@@ -95,21 +88,17 @@ module Report = struct
 
 
   let report_range user =
-    let date_first_opt = Utils.get_date () in
-    let date_second_opt = Utils.get_date () in
-    match date_first_opt, date_second_opt with
-    | None, _ -> ()
-    | _, None -> ()
-    | Some date1, Some date2 ->
-        let cmp = Utils.compare_dates date1 date2 in
-        let date1, date2 =
-          if cmp = 1 then (date2, date1)
-          else (date1, date2)
-        in
-        let list_to_report = list_days_in_range date1 date2 user.days in
-        if list_to_report = [] then print_endline "No days to report!"
-        else
-          let report = { empty_report with start_date = Some date1; end_date = Some date2 } in
-          let report = make_list_report report list_to_report in
-          print_report report user
+    let date1 = (Utils.choose_day user.days).date in
+    let date2 = (Utils.choose_day user.days).date in
+    let cmp = Utils.compare_dates date1 date2 in
+    let date1, date2 =
+      if cmp = 1 then (date2, date1)
+      else (date1, date2)
+    in
+    let list_to_report = list_days_in_range date1 date2 user.days in
+    if list_to_report = [] then print_endline "No days to report!"
+    else
+      let report = { empty_report with start_date = Some date1; end_date = Some date2 } in
+      let report = make_list_report report list_to_report in
+      print_report report user
 end

@@ -85,54 +85,50 @@ module User = struct
           carbohydrates = carbs;
           fats = fats
         } in
-        begin match Utils.get_date () with
-        | None -> user
-        | Some date ->
-            let rec update days =
-              match days with
-              | [] -> ([], false)
-              | curr_day :: rest ->
-                  if curr_day.date = date then
-                    let modified_day = 
-                      match command with
-                      | "1" -> { curr_day with breakfast = Some meal }
-                      | "2" -> { curr_day with snack_1 = Some meal }
-                      | "3" -> { curr_day with lunch = Some meal }
-                      | "4" -> { curr_day with snack_2 = Some meal }
-                      | _ -> { curr_day with dinner = Some meal }
-                    in
-                    let rest_days, _ = update rest in
-                    (modified_day :: rest_days, true)
-                  else 
-                    let (new_rest, found) = update rest in
-                    (curr_day :: new_rest, found)
-            in 
-            let (new_days, found) = update user.days in
-            if not found then print_endline "No day found with this date!"
-            else print_endline "New meal added!";
-            { user with days = new_days } end
+        let date = (Utils.choose_day user.days).date in
+        let rec update days =
+          begin match days with
+          | [] -> ([], false)
+          | curr_day :: rest ->
+              if curr_day.date = date then
+                let modified_day = 
+                  begin match command with
+                  | "1" -> { curr_day with breakfast = Some meal }
+                  | "2" -> { curr_day with snack_1 = Some meal }
+                  | "3" -> { curr_day with lunch = Some meal }
+                  | "4" -> { curr_day with snack_2 = Some meal }
+                  | _ -> { curr_day with dinner = Some meal } end
+                in
+                let rest_days, _ = update rest in
+                (modified_day :: rest_days, true)
+              else 
+                let (new_rest, found) = update rest in
+                (curr_day :: new_rest, found) end
+        in 
+        let (new_days, found) = update user.days in
+        if not found then print_endline "No day found with this date!"
+        else print_endline "New meal added!";
+        { user with days = new_days }
     | _ -> user
 
 
   let modify_workout user =
     let calories = Utils.read_int_safe "Enter burned calories: " in
-    match Utils.get_date () with
-    | None -> user
-    | Some date ->
-        let rec update days =
-          match days with
-          | [] -> ([], false)
-          | curr_day :: rest ->
-              if curr_day.date = date then
-                ({ curr_day with workout = Some calories } :: rest, true)
-              else 
-                let (new_rest, found) = update rest in
-                (curr_day :: new_rest, found)
-        in 
-        let (new_days, found) = update user.days in
-        if not found then print_endline "No day found with this date!"
-        else print_endline "New workout added!";
-        { user with days = new_days }
+    let date = (Utils.choose_day user.days).date in
+    let rec update days =
+      match days with
+      | [] -> ([], false)
+      | curr_day :: rest ->
+          if curr_day.date = date then
+            ({ curr_day with workout = Some calories } :: rest, true)
+          else 
+            let (new_rest, found) = update rest in
+            (curr_day :: new_rest, found)
+    in 
+    let (new_days, found) = update user.days in
+    if not found then print_endline "No day found with this date!"
+    else print_endline "New workout added!";
+    { user with days = new_days }
 
     
   let update_goal user =

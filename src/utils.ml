@@ -90,6 +90,8 @@ module Utils = struct
 
 
   let rec choose_day days =
+    let display_days = List.rev days in
+    print_day_list display_days;
     let option = read_int_safe "Enter a day number: " in
     let rec aux list cnt =
       match list with
@@ -98,7 +100,7 @@ module Utils = struct
           if cnt = option - 1 then Some x
           else aux xs (cnt + 1)
     in 
-    match aux days 0 with
+    match aux display_days 0 with
     | None -> print_endline "Invalid day number! Try again!"; choose_day days
     | Some day -> day
 end
