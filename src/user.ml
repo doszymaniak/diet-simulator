@@ -86,8 +86,7 @@ module User = struct
                   | "4" -> { curr_day with snack_2 = Some meal }
                   | _ -> { curr_day with dinner = Some meal } end
                 in
-                let rest_days, _ = update rest in
-                (modified_day :: rest_days, true)
+                (modified_day :: rest, true)
               else 
                 let (new_rest, found) = update rest in
                 (curr_day :: new_rest, found) end
