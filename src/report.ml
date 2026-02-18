@@ -68,15 +68,9 @@ module Report = struct
 
 
   let list_days_in_range start_date end_date days =
-    let rec aux curr ds =
-      match ds with
-      | [] -> List.rev curr
-      | curr_day :: rest ->
-          let d = curr_day.date in
-          if Utils.compare_dates d start_date = -1 then List.rev curr
-          else if Utils.compare_dates d end_date = 1 then aux curr rest
-          else aux (curr_day :: curr) rest
-    in aux [] days
+    List.filter (fun d -> 
+      Utils.compare_dates d.date start_date >= 0 &&
+      Utils.compare_dates d.date end_date <= 0) days
   
 
   let rec make_list_report report list_to_report =
