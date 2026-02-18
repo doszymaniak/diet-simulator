@@ -50,11 +50,11 @@ module Report = struct
     let new_days = day :: report.report_days in
     {
       report with
-      total_calories = Calories.lazy_total_calories new_days;
+      total_calories = Calories.lazy_total (fun m -> m.calories) new_days;
       calories_burned = Calories.lazy_calories_burned new_days;
-      total_carbohydrates = Calories.lazy_total_carbohydrates new_days;
-      total_proteins = Calories.lazy_total_proteins new_days;
-      total_fats = Calories.lazy_total_fats new_days;
+      total_carbohydrates = Calories.lazy_total (fun m -> m.carbohydrates) new_days;
+      total_proteins = Calories.lazy_total (fun m -> m.proteins) new_days;
+      total_fats = Calories.lazy_total (fun m -> m.fats) new_days;
       report_days = new_days;
     }
 
