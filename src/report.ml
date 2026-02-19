@@ -61,10 +61,13 @@ module Report = struct
 
   let report_day user =
     let day = Utils.choose_day user.days in
-    let report = { empty_report with start_date = Some day.date } in
-    let report = { report with end_date = Some day.date } in
-    let report = add_day_report day report in
-    print_report report user
+    if day = None then print_endline "Failed to create a report"
+    else
+      let day = Option.get day in
+      let report = { empty_report with start_date = Some day.date } in
+      let report = { report with end_date = Some day.date } in
+      let report = add_day_report day report in
+      print_report report user
 
 
   let list_days_in_range start_date end_date days =
@@ -82,17 +85,21 @@ module Report = struct
 
 
   let report_range user =
-    let date1 = (Utils.choose_day user.days).date in
-    let date2 = (Utils.choose_day user.days).date in
-    let cmp = Utils.compare_dates date1 date2 in
-    let date1, date2 =
-      if cmp = 1 then (date2, date1)
-      else (date1, date2)
-    in
-    let list_to_report = list_days_in_range date1 date2 user.days in
-    if list_to_report = [] then print_endline "No days to report!"
-    else
-      let report = { empty_report with start_date = Some date1; end_date = Some date2 } in
-      let report = make_list_report report list_to_report in
-      print_report report user
+    let day1 = Utils.choose_day user.days in
+    let day2 = Utils.choose_day user.days in
+    if day1 = None || day2 = None then print_endline "Failed to create a report"
+    else 
+      let date1 = (Option.get day1).date in
+      let date2 = (Option.get day2).date in
+      let cmp = Utils.compare_dates date1 date2 in
+      let date1, date2 =
+        if cmp = 1 then (date2, date1)
+        else (date1, date2)
+      in
+      let list_to_report = list_days_in_range date1 date2 user.days in
+      if list_to_report = [] then print_endline "No days to report!"
+      else
+        let report = { empty_report with start_date = Some date1; end_date = Some date2 } in
+        let report = make_list_report report list_to_report in
+        print_report report user
 end

@@ -72,7 +72,9 @@ module User = struct
           carbohydrates = carbs;
           fats = fats
         } in
-        let date = (Utils.choose_day user.days).date in
+        let day = Utils.choose_day user.days in
+        if day = None then (print_endline "Failed to add a meal"; user)
+        else let date = (Option.get day).date in
         let rec update days =
           begin match days with
           | [] -> ([], false)
@@ -100,7 +102,9 @@ module User = struct
 
   let modify_workout user =
     let calories = Utils.read_int_safe "Enter burned calories: " in
-    let date = (Utils.choose_day user.days).date in
+    let day = Utils.choose_day user.days in
+    if day = None then (print_endline "Failed to add a workout"; user)
+    else let date = (Option.get day).date in
     let rec update days =
       match days with
       | [] -> ([], false)
