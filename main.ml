@@ -4,7 +4,9 @@ open Diet_simulator.Simulation
 open Diet_simulator.User_json
 
 
-let rec main_menu user =
+let print_main_menu () =
+  print_endline "";
+  print_endline "=== Diet Simulator Menu ===";
   print_endline "1. Add a new day";
   print_endline "2. Add a new meal";
   print_endline "3. Add a workout";
@@ -16,6 +18,12 @@ let rec main_menu user =
   print_endline "9. Check your calorie intake and goal";
   print_endline "10. Print added days";
   print_endline "11. Exit";
+  print_endline "---------------------------";
+  print_endline "Select an option: "
+
+
+let rec main_menu user =
+  print_main_menu ();
   match read_line () with
   | "1" -> 
       let user = User.add_day user in
@@ -51,24 +59,29 @@ and continue user =
 
 
 let rec intro () =
-  print_endline "Choose: ";
+  print_endline "";
+  print_endline "=== Welcome ===";
   print_endline "1. Load user data from file";
   print_endline "2. Enter user data";
+  print_endline "Choose an option: ";
   let option = read_line () in
   match option with
-  | "1" -> 
-      let () = print_endline "Enter name of file: " in
+  | "1" ->
+      let () = print_endline "Enter file name (or press Enter for data/user.json): " in
       let filename = read_line () in
-      let user = User_json.load_user filename in
+      let resolved_name = if filename = "" then "data/user.json" else filename in
+      let user = User_json.load_user resolved_name in
       begin match user with
-      | Some user -> main_menu user
+      | Some user ->
+          print_endline "Profile loaded successfully.";
+          main_menu user
       | None -> 
-          let () = print_endline "Failed to load file!" in intro () end
-  | "2" -> 
+          let () = Printf.printf "Failed to load file: %s\n" resolved_name in intro () end
+  | "2" ->
       let user = User.create_new_user () in main_menu user
   | _ -> let () = print_endline "Invalid option!" in intro ()
 
 
 let () =
-  print_endline "Welcome!";
+  print_endline "Welcome to your diet simulator!";
   intro ()
